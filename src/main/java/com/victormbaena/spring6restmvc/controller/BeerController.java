@@ -35,34 +35,34 @@ public class BeerController {
      * Remember do not forget the annotation RequestBody to receive the element sent into the body
      */
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody Beer beer) {
+    public ResponseEntity<HttpStatus> handlePost(@RequestBody Beer beer) {
         log.info("Received beer: " + beer.toString());
         Beer beerSaved = beerService.saveNewBeer(beer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/beer/" + beerSaved.getId().toString());
 
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping("{beerId}")
-    public ResponseEntity updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
+    public ResponseEntity<HttpStatus> updateById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
         beerService.updateBeerById(beerId, beer);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("{beerId}")
-    public ResponseEntity deleteById(@PathVariable("beerId") UUID beerId) {
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("beerId") UUID beerId) {
         beerService.deleteBeerById(beerId);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("{beerId}")
-    public ResponseEntity patchBeerById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
+    public ResponseEntity<HttpStatus> patchBeerById(@PathVariable("beerId") UUID beerId, @RequestBody Beer beer) {
         beerService.patchBeerById(beerId, beer);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

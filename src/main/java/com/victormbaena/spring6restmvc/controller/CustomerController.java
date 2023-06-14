@@ -32,36 +32,36 @@ public class CustomerController {
     }
 
     @PostMapping
-    public ResponseEntity handlePost(@RequestBody Customer customer) {
+    public ResponseEntity<HttpStatus> handlePost(@RequestBody Customer customer) {
         log.info("Received customer: " + customer.toString());
         Customer customerSaved = customerService.saveNewCustomer(customer);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Location", "/api/v1/customer/" + customerSaved.getId().toString());
 
-        return new ResponseEntity(headers, HttpStatus.CREATED);
+        return new ResponseEntity<>(headers, HttpStatus.CREATED);
     }
 
     @PutMapping("{customerId}")
-    public ResponseEntity updateById(@PathVariable("customerId") UUID customerId,
+    public ResponseEntity<HttpStatus> updateById(@PathVariable("customerId") UUID customerId,
                                      @RequestBody Customer customer) {
 
         customerService.updateCustomerById(customerId, customer);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("{customerId}")
-    public ResponseEntity deleteById(@PathVariable("customerId") UUID customerId) {
+    public ResponseEntity<HttpStatus> deleteById(@PathVariable("customerId") UUID customerId) {
         customerService.deleteCustomerById(customerId);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @PatchMapping("{customerId}")
-    public ResponseEntity patchCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
+    public ResponseEntity<HttpStatus> patchCustomerById(@PathVariable("customerId") UUID customerId, @RequestBody Customer customer) {
         customerService.patchCustomerById(customerId, customer);
 
-        return new ResponseEntity(HttpStatus.NO_CONTENT);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }
