@@ -22,13 +22,17 @@ public class CustomerController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Customer> listCustomer() {
         log.info("Get Customer list - In controller");
-        return customerService.listCustomer();
+        List<Customer> customerList = customerService.listCustomer();
+        log.info("Customer number of elements = " + (long) customerList.size());
+        return customerList;
     }
 
     @RequestMapping(value = "{customerId}", method = RequestMethod.GET)
     public Customer getCustomerById(@PathVariable UUID customerId) {
         log.debug("Get customer by ID - In controller - Customer");
-        return customerService.getCustomerById(customerId);
+        Customer customer = customerService.getCustomerById(customerId);
+        log.info(customer.toString());
+        return customer;
     }
 
     @PostMapping

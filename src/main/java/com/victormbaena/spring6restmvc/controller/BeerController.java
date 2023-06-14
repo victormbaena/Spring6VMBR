@@ -2,7 +2,7 @@ package com.victormbaena.spring6restmvc.controller;
 
 import com.victormbaena.spring6restmvc.model.Beer;
 import com.victormbaena.spring6restmvc.services.BeerService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.UUID;
 
 @Slf4j
-@AllArgsConstructor
+//@AllArgsConstructor
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/v1/beer")
 public class BeerController {
@@ -22,13 +23,17 @@ public class BeerController {
     @RequestMapping(method = RequestMethod.GET)
     public List<Beer> listBeer() {
         log.info("Get Beer list - In controller");
-        return beerService.listBeers();
+        List<Beer> beerList = beerService.listBeers();
+        log.info("list of beer:\n" + beerList.stream().toList());
+        return beerList;
     }
 
     @RequestMapping(value = "{beerId}", method = RequestMethod.GET)
     public Beer getBeerById(@PathVariable UUID beerId) {
         log.debug("Get Beer by ID - In controller");
-        return beerService.getBeerById(beerId);
+        Beer beer = beerService.getBeerById(beerId);
+        log.info("Beer: " + beer);
+        return beer;
     }
 
     /**
