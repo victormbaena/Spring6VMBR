@@ -31,7 +31,7 @@ public class BeerController {
     @GetMapping(value = BEER_PATH_ID)
     public Beer getBeerById(@PathVariable UUID beerId) {
         log.debug("Get Beer by ID - In controller");
-        Beer beer = beerService.getBeerById(beerId);
+        Beer beer = beerService.getBeerById(beerId).orElseThrow(NotFoundException::new);
         log.info("Beer: " + beer);
         return beer;
     }
@@ -69,5 +69,16 @@ public class BeerController {
         beerService.patchBeerById(beerId, beer);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
+    /**
+     * This method launches an Exception only for BeerController.
+     * Could be removed at controller level.
+     * @return ResponseEntity
+     */
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<HttpStatus> handleNotFoundException() {
+        log.info("Not found Exception Handler method");
+        return ResponseEntity.notFound().build();
     }
 }
