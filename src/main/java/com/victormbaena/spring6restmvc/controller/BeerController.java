@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -40,7 +41,7 @@ public class BeerController {
      * Remember do not forget the annotation RequestBody to receive the element sent into the body
      */
     @PostMapping(BEER_PATH)
-    public ResponseEntity<HttpStatus> handlePost(@RequestBody BeerDTO beer) {
+    public ResponseEntity<HttpStatus> handlePost(@Validated @RequestBody BeerDTO beer) {
         log.info("Received beer: " + beer.toString());
         BeerDTO beerSaved = beerService.saveNewBeer(beer);
 
@@ -51,7 +52,7 @@ public class BeerController {
     }
 
     @PutMapping(BEER_PATH_ID)
-    public ResponseEntity<HttpStatus> updateById(@PathVariable("beerId") UUID beerId, @RequestBody BeerDTO beer) {
+    public ResponseEntity<HttpStatus> updateById(@PathVariable("beerId") UUID beerId, @Validated @RequestBody BeerDTO beer) {
         if (beerService.updateBeerById(beerId, beer).isEmpty()){
             throw new NotFoundException();
         }
